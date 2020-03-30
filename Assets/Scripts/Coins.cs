@@ -2,24 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PoopController : MonoBehaviour {
-    private InstantiatePoop instantiatePoop;
-    public StoreInformation storeInformation;
-
-    public int totalGoals = 0;
-    private bool sumGoal = false;
-
+public class Coins : MonoBehaviour
+{
+    private Coins instantiateCoins;
+    private StoreInformation storeInformation;
     // Use this for initialization
-    void Start () {
-        instantiatePoop = GameObject.FindGameObjectWithTag("MainScript").GetComponent<InstantiatePoop>();
+    void Start()
+    {
+        instantiateCoins = GameObject.FindGameObjectWithTag("MainScript").GetComponent<Coins>();
         storeInformation = GameObject.FindGameObjectWithTag("StoreInformation").GetComponent<StoreInformation>();
-
     }
 
     // Update is called once per frame
-    void Update () {
-		
-	}
+    void Update()
+    {
+
+    }
 
     void OnTriggerEnter2D(Collider2D col)
     {
@@ -27,20 +25,19 @@ public class PoopController : MonoBehaviour {
         {
             DeleteAll();
             this.transform.Find("Particle").GetComponent<ParticleSystem>().Play(true);
-           
         }
 
-        if (col.tag == "Goal" && !sumGoal)
+        if (col.tag == "Player")
         {
-            instantiatePoop.totalPoopsGoal++;
-            storeInformation.totalGoals++;
+            switch (this.gameObject.tag)
+            {
+                case "CoinB": storeInformation.coins += 10 ; break;
+                case "CoinS": storeInformation.coins += 40; break;
+                case "CoinG": storeInformation.coins += 100; break;
+            }
+            storeInformation.Save();
 
-            sumGoal = true;
             DeleteAll();
-            storeInformation.coins += 20;
-            instantiatePoop.currentCoins += 20;
-            instantiatePoop.poopsGoal++;
-            this.transform.Find("Goal").GetComponent<ParticleSystem>().Play(true);
         }
 
     }
@@ -52,15 +49,14 @@ public class PoopController : MonoBehaviour {
         this.GetComponent<Rigidbody2D>().simulated = false;
 
         this.GetComponent<SpriteRenderer>().enabled = false;
-        this.GetComponent<CapsuleCollider2D>().enabled = false;
         this.GetComponent<CircleCollider2D>().enabled = false;
 
-        instantiatePoop.poopsInScreen--;
+      //  instantiatePoop.poopsInScreen--;
 
-        StartCoroutine(DestroyPoop(7));
+        StartCoroutine(DestroyCoin(7));
     }
 
-    public IEnumerator DestroyPoop(float tiempo)
+    public IEnumerator DestroyCoin(float tiempo)
     {
         yield return new WaitForSeconds(tiempo);
         Destroy(gameObject);
