@@ -90,28 +90,6 @@ public class StoreInformation : MonoBehaviour
     }
 
 
-    //***********BUTTONS***************
-    public void Play()
-    {
-        SceneManager.LoadScene(0);
-    }
-
-    public void Shop()
-    {
-        SceneManager.LoadScene(2);
-    }
-
-    public void Exit()
-    {
-        Application.Quit();
-    }
-
-    public void Back()
-    {
-        SceneManager.LoadScene(1);
-    }
-    //*******************************
-
     void Load()
     {
         if (File.Exists(routeFile))

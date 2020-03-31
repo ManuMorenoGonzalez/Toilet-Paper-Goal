@@ -32,14 +32,14 @@ public class PoopController : MonoBehaviour {
 
         if (col.tag == "Goal" && !sumGoal)
         {
-            instantiatePoop.totalPoopsGoal++;
             storeInformation.totalGoals++;
+            instantiatePoop.poopsGoal++;
 
             sumGoal = true;
             DeleteAll();
             storeInformation.coins += 20;
             instantiatePoop.currentCoins += 20;
-            instantiatePoop.poopsGoal++;
+            instantiatePoop.totalPoopsGoal++;
             this.transform.Find("Goal").GetComponent<ParticleSystem>().Play(true);
         }
 

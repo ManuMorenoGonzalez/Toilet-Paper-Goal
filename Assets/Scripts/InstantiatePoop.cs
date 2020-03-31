@@ -46,11 +46,16 @@ public class InstantiatePoop : MonoBehaviour
     public GameObject towerItem;
     public GameObject sinkItem;
 
+    public GameObject coinB;
+    public GameObject coinS;
+    public GameObject coinG;
+    public float timeCoins = 3;
+
     // Use this for initialization
     void Start()
     {
         storeInformation = GameObject.FindGameObjectWithTag("StoreInformation").GetComponent<StoreInformation>();
-
+        InvokeRepeating("InstantiateCoins", 20.0f, 20.0f);
     }
 
     // Update is called once per frame
@@ -94,8 +99,6 @@ public class InstantiatePoop : MonoBehaviour
             poopsPlayedInThisLevel++;
             poopsInScreen++;
             
-            Debug.Log("poopsPlayedInThisLevel "+ poopsPlayedInThisLevel);
-
             spawnPosition.x = Random.Range(-Screen.width/10, Screen.width/10);
             spawnPosition.y = -20f;
             spawnPosition.z = 0f;
@@ -109,21 +112,21 @@ public class InstantiatePoop : MonoBehaviour
         {
             case 1:
                 {
-                    Debug.Log("currentLevel " + currentLevel);
                     maxPoopInLevel = 4;
                     poopsGoalNextLevel = 2;
-                    if (poopsPlayedInThisLevel > maxPoopInLevel)
-                    {
-                        Loser();
-                        storeInformation.Save();
-                    }
                     if (poopsGoal == poopsGoalNextLevel)
                     {
                         currentCoins += 50;
                         storeInformation.coins += 50;
                         currentLevel++;
+                        timeCoins = 3;
                         poopsPlayedInThisLevel = 0;
                         poopsGoal = 0;
+                        storeInformation.Save();
+                    }
+                    if (poopsPlayedInThisLevel > maxPoopInLevel)
+                    {
+                        Loser();
                         storeInformation.Save();
                     }
                     break;
@@ -131,20 +134,20 @@ public class InstantiatePoop : MonoBehaviour
             case 2:
                 {
                     maxPoopInLevel = 8;
-                    poopsGoalNextLevel = 4;
-
-                    if (poopsPlayedInThisLevel > maxPoopInLevel)
-                    {
-                        Loser();
-                        storeInformation.Save();
-                    }
+                    poopsGoalNextLevel = 5;
                     if (poopsGoal == poopsGoalNextLevel)
                     {
                         currentCoins += 300;
                         storeInformation.coins += 300;
                         currentLevel++;
+                        timeCoins = 3;
                         poopsPlayedInThisLevel = 0;
                         poopsGoal = 0;
+                        storeInformation.Save();
+                    }
+                    if (poopsPlayedInThisLevel > maxPoopInLevel)
+                    {
+                        Loser();
                         storeInformation.Save();
                     }
                     break;
@@ -153,12 +156,6 @@ public class InstantiatePoop : MonoBehaviour
                 {
                     maxPoopInLevel = 10;
                     poopsGoalNextLevel = 7;
-
-                    if (poopsPlayedInThisLevel > maxPoopInLevel)
-                    {
-                        storeInformation.Save();
-                        Loser();
-                    }
                     if (poopsGoal == poopsGoalNextLevel && !isWinner)
                     {
                         //WIN
@@ -168,9 +165,54 @@ public class InstantiatePoop : MonoBehaviour
                         storeInformation.Save();
                         Winner();
                     }
+                    if (poopsPlayedInThisLevel > maxPoopInLevel)
+                    {
+                        storeInformation.Save();
+                        Loser();
+                    }
                     break;
                 }
         }
+    }
+
+    void InstantiateCoins()
+    {
+        if (timeCoins > 0)
+        {
+            timeCoins--;
+            spawnPosition.x = Random.Range(-Screen.width / 10, Screen.width / 10);
+            spawnPosition.y = -20f;
+            spawnPosition.z = 0f;
+
+
+            switch (currentLevel)
+            {
+                case 1:
+                    {
+                        GameObject coin = Instantiate(coinB, spawnPosition, Quaternion.identity) as GameObject;
+                        coin.transform.SetParent(GameObject.FindGameObjectWithTag("Poops").transform, false);
+                        break;
+                    }
+                case 2:
+                    {
+                        GameObject coin = Instantiate(coinS, spawnPosition, Quaternion.identity) as GameObject;
+                        coin.transform.SetParent(GameObject.FindGameObjectWithTag("Poops").transform, false);
+                        break;
+                    }
+                case 3:
+                    {
+                        GameObject coin = Instantiate(coinG, spawnPosition, Quaternion.identity) as GameObject;
+                        coin.transform.SetParent(GameObject.FindGameObjectWithTag("Poops").transform, false);
+                        break;
+                    }
+            }
+        }
+    }
+
+    public IEnumerator GenerateNewCoin(float tiempo)
+    {
+        yield return new WaitForSeconds(tiempo);
+        Destroy(gameObject);
     }
 
     void Loser()
@@ -183,5 +225,15 @@ public class InstantiatePoop : MonoBehaviour
     {
         AllObject.SetActive(false);
         WinnerPanel.SetActive(true);
+    }
+
+    public void Play()
+    {
+        SceneManager.LoadScene(2);
+    }
+
+    public void Back()
+    {
+        SceneManager.LoadScene(0);
     }
 }

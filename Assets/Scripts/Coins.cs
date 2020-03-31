@@ -5,10 +5,13 @@ using UnityEngine;
 public class Coins : MonoBehaviour
 {
     private Coins instantiateCoins;
+    private InstantiatePoop instantiatePoop;
+
     private StoreInformation storeInformation;
     // Use this for initialization
     void Start()
     {
+        instantiatePoop = GameObject.FindGameObjectWithTag("MainScript").GetComponent<InstantiatePoop>();
         instantiateCoins = GameObject.FindGameObjectWithTag("MainScript").GetComponent<Coins>();
         storeInformation = GameObject.FindGameObjectWithTag("StoreInformation").GetComponent<StoreInformation>();
     }
@@ -31,11 +34,10 @@ public class Coins : MonoBehaviour
         {
             switch (this.gameObject.tag)
             {
-                case "CoinB": storeInformation.coins += 10 ; break;
-                case "CoinS": storeInformation.coins += 40; break;
-                case "CoinG": storeInformation.coins += 100; break;
+                case "CoinB": { instantiatePoop.currentCoins += 10; break; }
+                case "CoinS": { instantiatePoop.currentCoins += 40;  break; }
+                case "CoinG": { instantiatePoop.currentCoins += 100; break; }
             }
-            storeInformation.Save();
 
             DeleteAll();
         }

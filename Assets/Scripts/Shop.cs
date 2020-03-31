@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Shop : MonoBehaviour
@@ -118,7 +119,6 @@ public class Shop : MonoBehaviour
                 {
                     plungerBt.GetComponent<Image>().color = Color.green;
                     storeInformation.coins -= 6000;
-                    storeInformation.coins = storeInformation.coins;
                     plunger = true;
                     storeInformation.plunger = plunger;
                     plungerBt.interactable = false;
@@ -132,7 +132,6 @@ public class Shop : MonoBehaviour
                 {
                     showerBt.GetComponent<Image>().color = Color.green;
                     storeInformation.coins -= 15000;
-                    storeInformation.coins = storeInformation.coins;
                     shower = true;
                     storeInformation.shower = shower;
                     showerBt.interactable = false;
@@ -146,7 +145,6 @@ public class Shop : MonoBehaviour
                 {
                     mirrowBt.GetComponent<Image>().color = Color.green;
                     storeInformation.coins -= 10000;
-                    storeInformation.coins = storeInformation.coins;
                     mirrow = true;
                     storeInformation.mirrow = mirrow;
                     mirrowBt.interactable = false;
@@ -160,7 +158,6 @@ public class Shop : MonoBehaviour
                 {
                     sinkBt.GetComponent<Image>().color = Color.green;
                     storeInformation.coins -= 6000;
-                    storeInformation.coins = storeInformation.coins;
                     sink = true;
                     storeInformation.sink = sink;
                     sinkBt.interactable = false;
@@ -174,7 +171,6 @@ public class Shop : MonoBehaviour
                 {
                     towerBt.GetComponent<Image>().color = Color.green;
                     storeInformation.coins -= 7000;
-                    storeInformation.coins = storeInformation.coins;
                     tower = true;
                     storeInformation.tower = tower;
                     towerBt.interactable = false;
@@ -184,5 +180,10 @@ public class Shop : MonoBehaviour
                     towerBt.GetComponent<Image>().color = Color.red;
                 break;
         }
+    }
+
+    public void Back()
+    {
+        SceneManager.LoadScene(0);
     }
 }
